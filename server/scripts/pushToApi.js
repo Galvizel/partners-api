@@ -16,12 +16,12 @@ module.exports = async fileId => {
         const status = rows[0].Status;
         if (status === 'Push') {
             const api = (await apiSheet.getRows())[0]
-            const apiKey = api['API-KEY'];
-            const activationKey = api['ACTIVATION-KEY'];
-            const transferKey = api['TRANSFER-KEY'];
+            const apiKey = api['API-KEY'].trim();
+            const activationKey = api['ACTIVATION-KEY'].trim();
+            const transferKey = api['TRANSFER-KEY'].trim();
             const payload = rows.map(row => {
                 const newRow = {
-                    "domain": row['Domain Name'],
+                    "domain": row['Domain Name'].trim(),
                     // "contactName": '',
                     // "contactCountry": "",
                     // "contactPhone": "",
@@ -31,7 +31,7 @@ module.exports = async fileId => {
                     // "billingName": "",
                     // "billingEmail": "",
                     // "billingNotes": "",
-                    "newDomain": row['New Domain'],
+                    "newDomain": row['New Domain'].trim(),
                     // "paymentKey": "",
                     // "cardFrom": "",
                     "contactName": "Contact Name",
@@ -40,16 +40,16 @@ module.exports = async fileId => {
                     "contactCountry": "+44",
                     "contactPhone": "123123123",
                 }
-                if (row['Active'] === 'Yes') {
+                if (row['Active'].trim() === 'Yes') {
                     newRow.activationKey = activationKey;
                 }
-                if (row['New Domain']) {
+                if (row['New Domain'].trim()) {
                     newRow['transferKey'] = transferKey;
                     newRow.planId = 1;
                 }
                 return newRow;
             });
-
+            
             const { data } = await axios.post('https://accessibe.com/api/batch', payload, {
                 headers: {
                     'Api-Key': apiKey,
@@ -59,13 +59,15 @@ module.exports = async fileId => {
 
             console.log('Successful API response==>>', data);
             if (data.status) {
-                const rowsToUpdate = rows.filter(row => row['New Domain']);
-                await Promise.all(rowsToUpdate.map(row => {
-                    row['Domain Name'] = row['New Domain'];
-                    row['New Domain'] = '';
-                    row.save()
-                }));
-                console.log('Domain Names updated with New Domain!!!')
+                const rowsToUpdate = rows.filter(row => row['New Domain'].trim());
+                if (rowsToUpdate.length) {
+                    await Promise.all(rowsToUpdate.map(row => {
+                        row['Domain Name'] = row['New Domain'].trim();
+                        row['New Domain'] = '';
+                        row.save()
+                    }));
+                    console.log('Domain Names updated with New Domain!!!')
+                }
             }
             return data;
 
