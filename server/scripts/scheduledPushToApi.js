@@ -2,7 +2,7 @@ const { CronJob } = require('cron');
 const NodeGoogleDrive = require('node-google-drive');
 const pushToApi = require('./pushToApi');
 
-const job = new CronJob('* * * * *', async () => {
+const job = new CronJob('0 * * * *', async () => {
     const folderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
     try {
         const googleDriveInstance = new NodeGoogleDrive({ ROOT_FOLDER: folderId });
