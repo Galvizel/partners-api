@@ -1,0 +1,7 @@
+To start the server:
+1. Terminal >> npm run server
+2. Terminal >> npm run client
+
+Now it will run every 1 hour.
+
+If you want to activate/disactivate the CRON of time - Just comment in/out the job.start in server.js File

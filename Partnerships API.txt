@@ -1,0 +1,94 @@
+
+---------Project Summary and Needs------------
+
+Relevant Cells/Columns
+
+Domain Name (B Column)
+New Domain (C Column)
+Active (D Column)
+
+1. Activity
+If Status = Draft - Don't push Json.
+If Status = Push - Push Json.
+
+
+2. Activation
+
+If Active = Yes, Send Activation-key with that Row
+If No = Don't send activation Key - Just the Domain
+
+3. New Domain
+If new domain has value, Push Domain and new domain with Transfer-key with that row.
+	
+New Domain After (Google Scripts) - After Pushing, take value from New domain and transfer to Domain name instead
+
+activation key only if active is yes,
+transfer key only if there is a new domain
+
+Cron - Run every one Hour and check if the status is Push.
+
+--------------------------------------------------------------
+
+Tasks:
+API
+[] Tried today to work with and didn't work
+[] Deploy on Cloud
+[] Put the Folder that seats on your Desktop Inside Google Drive/github
+[]* Create an Log of the New Domain Changes
+[] Think about - after a Success "APIcall" (When EKLA get's new value) to change automatically the Status to Draft.
+[] Should create "auto-share" file with GoogleCloud account or change the Cloud-account to Galvizel@accessibe.com (Prefferd) 
+
+Google Drive
+[] Create a "Guide" how to use the Batch update file
+[] Lock Ranges that you don't want others to touch
+[] See if it's working when the Tabs/sheets is hidden
+[] Emmbed JUST PART OF THE Cells.
+
+General
+[] Ask Shir why PlanId, Contact Name and Phone is Requierd and what he is doing with partner's that don't provide (e.g - Realpage)
+
+
+Done:
+[] Create UI that will be easy to manage -----
+    | Account Name | API-KEY | Activation Key | Transfer Key |
+[] Create a Folder inside accessiBe to all the partner file
+[] Create another file to test it out
+[] Save Template and lock it for others
+
+
+----------------------------
+Resources
+
+API Documantaion
+https://accessibe.com/support/partner-program/managing-subscriptions-from-remote-or-in-batches-using-our-api-or-csv-file-uploads
+http://accessibe.com/images/support/accessibe-example-json.json
+https://theoephraim.github.io/node-google-spreadsheet/#/classes/google-spreadsheet-row
+
+Active Button Script
+https://www.benlcollins.com/apps-script/google-sheets-button/
+https://www.benlcollins.com/apps-script/google-sheets-button/
+
+Embed part of the cells:
+https://hellotumo.com/2012/11/how-to-embed-specific-cells-when-embedding-a-google-spreadsheet/
+
+Account Keys for test (Galvizel@accessibe.com)
+Galvizel@accessibe.com ---12345
+Galvizel123@gmail.com ---- 
+gale@accessibe.net ---- 
+Google Cloud account - connected to galvizel@accessibe.com
+
+
+--------------------------------------------
+
+--------------------------
+
+Requierd Fields for POST
+
+    "domain": row['Domain Name'],
+
+                    "domain"
+                    "contactName":"Contact Name",
+                    "contactEmail":"contact@email.com",
+                    "planId":"1",
+                    "contactCountry":"+44",
+                    "contactPhone":"123123123",
