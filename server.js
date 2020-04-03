@@ -9,6 +9,7 @@ require('./server/scripts/scheduledPushToApi'); //automatic scheduled cron job
 
 app.use(express.json());
 app.use('/api', routes);
+app.use(express.static(`${__dirname}/build`));
 
 app.get('*', (req, res) => {
     res.sendFile(`${__dirname}/build/index.html`);
