@@ -1,5 +1,7 @@
 const axios = require('axios');
-const { GoogleSpreadsheet } = require('google-spreadsheet');
+const {
+    GoogleSpreadsheet
+} = require('google-spreadsheet');
 
 module.exports = async fileId => {
     try {
@@ -34,23 +36,24 @@ module.exports = async fileId => {
                     "newDomain": row['New Domain'].trim(),
                     // "paymentKey": "",
                     // "cardFrom": "",
-                    "contactName": "Contact Name",
-                    "contactEmail": "contact@email.com",
-                    "planId": "1",
-                    "contactCountry": "+44",
-                    "contactPhone": "123123123",
+                    "contactName": row['Contact Name'] && row['Contact Name'].trim() || "Contact Name",
+                    "contactEmail": row['Contact Email'] && row['Contact Email'].trim() || "contact@email.com",
+                    "planId": row['Plan Id'] && row['Plan Id'].trim() || 1,
+                    "contactCountry": row['Country Code'] && row['Country Code'].trim() || "+44",
+                    "contactPhone": row['Contact Phone'] && row['Contact Phone'].trim() || "123123123",
                 }
                 if (row['Active'].trim() === 'Yes') {
                     newRow.activationKey = activationKey;
                 }
                 if (row['New Domain'].trim()) {
                     newRow['transferKey'] = transferKey;
-                    newRow.planId = 1;
                 }
                 return newRow;
             });
-            
-            const { data } = await axios.post('https://accessibe.com/api/batch', payload, {
+
+            const {
+                data
+            } = await axios.post('https://accessibe.com/api/batch', payload, {
                 headers: {
                     'Api-Key': apiKey,
                     'Content-Type': 'application/json'
@@ -73,7 +76,9 @@ module.exports = async fileId => {
 
         } else {
             console.log('App in Draft Mode, Nothing to do :)');
-            return { message: 'App in Draft Mode, Nothing to do :)' };
+            return {
+                message: 'App in Draft Mode, Nothing to do :)'
+            };
         }
     } catch (err) {
         console.log('an error occurred===>>>', err);
