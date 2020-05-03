@@ -33,7 +33,7 @@ module.exports = async fileId => {
                     // "billingName": "",
                     // "billingEmail": "",
                     // "billingNotes": "",
-                    "newDomain": row['New Domain'].trim(),
+                    "newDomain": row['New Domain'] && row['New Domain'].trim(),
                     // "paymentKey": "",
                     // "cardFrom": "",
                     "contactName": row['Contact Name'] && row['Contact Name'].trim() || "Contact Name",
@@ -45,7 +45,7 @@ module.exports = async fileId => {
                 if (row['Active'].trim() === 'Yes') {
                     newRow.activationKey = activationKey;
                 }
-                if (row['New Domain'].trim()) {
+                if (row['New Domain'] && row['New Domain'].trim()) {
                     newRow['transferKey'] = transferKey;
                 }
                 return newRow;
@@ -62,10 +62,10 @@ module.exports = async fileId => {
 
             console.log('Successful API response==>>', data);
             if (data.status) {
-                const rowsToUpdate = rows.filter(row => row['New Domain'].trim());
+                const rowsToUpdate = rows.filter(row => row['New Domain'] && row['New Domain'].trim());
                 if (rowsToUpdate.length) {
                     await Promise.all(rowsToUpdate.map(row => {
-                        row['Domain Name'] = row['New Domain'].trim();
+                        row['Domain Name'] = row['New Domain'] && row['New Domain'].trim();
                         row['New Domain'] = '';
                         row.save()
                     }));
