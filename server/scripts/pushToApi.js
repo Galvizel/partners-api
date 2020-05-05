@@ -16,7 +16,7 @@ module.exports = async fileId => {
         const apiSheet = doc.sheetsByIndex.find(s => s.title === 'API');
         const rows = await mainViewSheet.getRows();
         const status = rows[0].Status;
-        if (status === 'Push') {
+        if (status === 'Live') {
             const api = (await apiSheet.getRows())[0]
             const apiKey = api['API-KEY'].trim();
             const activationKey = api['ACTIVATION-KEY'].trim();
